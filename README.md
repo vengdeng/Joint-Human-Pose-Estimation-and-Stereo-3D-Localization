@@ -20,7 +20,7 @@ Please keep the folder openpifpaf's name unchanged, since the pretrained pifpaf 
    python3 -m openpifpaf.train  --momentum=0.95   --epochs=20   --lr-decay 10 20   --batch-size=3   --basenet=resnet152block5   --quad=1   --headnets pif paf psf  --square-edge=401   --regression-loss=laplace   --lambdas 30 2 2 50 3 3 50 3 3   --crop-fraction=0.5 --pretrained (the model from pifpaf)
   ```
 ### Pretrained Psf model
-The pretrained model weights for person localization can be found from the google drive. The model without correlation module is [pifpaf](https://github.com/vita-epfl/openpifpaf). The model with correlation module is [pifpaf](https://github.com/vita-epfl/openpifpaf).
+The pretrained model weights for person localization can be found from the google drive. The model with correlation module is [psf_corr](https://drive.google.com/file/d/13Ezq4_abNJyuWVYlqRhERebZ5DEO81Gi/view?usp=sharing). If you want to use The model without correlation module, please replace the all heads_corr in nets.py with head_psf, the pretrained model is [psf_no_corr](https://drive.google.com/file/d/1fPaNyzXiVN9oYA9OWvQi5BlRk_Uw19PX/view?usp=sharing).
 ### Stereo Inference
 python3 -m openpifpaf.predict --help
 ### Stereo Result
