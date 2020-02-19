@@ -5,7 +5,7 @@ This is Wenlong's master thesis at VITA Lab EPFL.
 Python 3 is required and you need to clone this repository and then:
 
 ```sh
-pip3 install numpy cython 
+pip3 install numpy cython imgaug pycocotools
 python setup.py install 
 ```
 move the .so file in /build/lib.\* to openpifpaf. Then go to the correlation folder and run 
