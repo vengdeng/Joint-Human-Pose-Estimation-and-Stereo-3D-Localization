@@ -1,5 +1,5 @@
 # Joint-Human-Pose-Estimation-and-Stereo-Localization
-This is Wenlong's master thesis at VITA Lab EPFL.  
+This is Wenlong's master thesis at VITA Lab EPFL and the code is build upon openpifpaf
 
 # Install
 Python 3 is required and you need to clone this repository and then:
@@ -40,3 +40,20 @@ python3 -m openpifpaf.predict --help
 | 3DOP          |  Mono  | 0.54(0.72)|0.85(1.13)|1.56(1.65)| 
 | MonoLoco      |  Mono  | 0.85(0.88)|0.97(1.23)|1.14(1.49)|
 | MonoDepth     |  Mono  | 1.40(1.69)|2.19(2.98)|2.31(3.77)| 
+
+
+## Citation
+
+The [paper](https://ieeexplore.ieee.org/abstract/document/9197069) appears at ICRA 2020. If you use, compare with, or refer to this work, please cite
+
+```bibtex
+@INPROCEEDINGS{9197069,
+  author={W. {Deng} and L. {Bertoni} and S. {Kreiss} and A. {Alahi}},
+  booktitle={2020 IEEE International Conference on Robotics and Automation (ICRA)}, 
+  title={Joint Human Pose Estimation and Stereo 3D Localization}, 
+  year={2020},
+  volume={},
+  number={},
+  pages={2324-2330},
+  doi={10.1109/ICRA40945.2020.9197069}}
+```
