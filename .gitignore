@@ -1,0 +1,12 @@
+*.pyc
+.git/
+.idea/
+*checkpoints*
+*logs*
+*ibex
+outputs/*
+*egg*
+*pkl*
+build/*
+*pycache*
+openpifpaf/network/__pycache__/*

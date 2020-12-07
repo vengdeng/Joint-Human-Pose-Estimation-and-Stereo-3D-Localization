@@ -110,7 +110,6 @@ class Trainer(object):
         # head_losses = [c
         #                for l, o, t in zip(self.losses, outputs, targets)
         #                for c in l(o, t)]
-        print(len(head_losses))
         assert len(self.lambdas) == len(head_losses)
         loss_values = [lam * l
                        for lam, l in zip(self.lambdas, head_losses)

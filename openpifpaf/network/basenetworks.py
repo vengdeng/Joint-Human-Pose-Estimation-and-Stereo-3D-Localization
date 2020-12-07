@@ -111,11 +111,8 @@ class ResnetBlocks(object):
 
     @staticmethod
     def replace_downsample(block):
-        print('!!!!!!!!!!')
         first_bottleneck = block[0]
-        print(first_bottleneck.downsample)
         first_bottleneck.downsample = DownsampleCat()
-        print(first_bottleneck)
 
     @staticmethod
     def out_channels(block):

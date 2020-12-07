@@ -224,7 +224,6 @@ class CocoKeypoints(torch.utils.data.Dataset):
         original_size = image.size
         image = self.image_transform(image)
         image2 = self.image_transform(image2)
-        print(image2)
         # mask valid
         #valid_area = meta['valid_area']
         #utils.mask_valid_image(image, valid_area)

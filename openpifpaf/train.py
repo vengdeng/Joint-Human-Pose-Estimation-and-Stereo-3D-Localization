@@ -2,16 +2,16 @@
 
 import argparse
 import datetime
-
+import os
 import torch
 
 from . import datasets, encoder, logs, optimize, transforms
 from .network import losses, nets, Trainer
 
-ANNOTATIONS_TRAIN = '/data/data-mscoco/annotations/person_keypoints_train2017.json'
-ANNOTATIONS_VAL = '/data/data-mscoco/annotations/person_keypoints_val2017.json'
-IMAGE_DIR_TRAIN = '/data/data-mscoco/images/train2017/'
-IMAGE_DIR_VAL = '/data/data-mscoco/images/val2017/'
+ANNOTATIONS_TRAIN = '/data/hdd1/dengwenlong/datasets/coco/annotations/person_keypoints_train2017.json'
+ANNOTATIONS_VAL = '/data/hdd1/dengwenlong/datasets/coco/annotations/person_keypoints_val2017.json'
+IMAGE_DIR_TRAIN = '/data/hdd1/dengwenlong/datasets/coco/train2017/'
+IMAGE_DIR_VAL = '/data/hdd1/dengwenlong/datasets/coco/val2017/'
 
 
 
@@ -86,7 +86,8 @@ def cli():
 
     if args.output is None:
         args.output = default_output_file(args)
-
+    if not os.path.exists(args.output):
+        os.makedirs(args.output)
     if args.debug and 'skeleton' not in args.headnets:
         raise Exception('add "skeleton" as last headnet to see debug output')
 
@@ -97,7 +98,8 @@ def cli():
     args.device = torch.device('cpu')
     pin_memory = False
     if not args.disable_cuda and torch.cuda.is_available():
-        args.device = torch.device('cuda:1')
+        args.device = torch.device('cuda')
+        print(args.device)
         pin_memory = True
 
     return args, pin_memory
@@ -107,7 +109,8 @@ def main():
     args, pin_memory = cli()
     logs.configure(args)
     net_cpu, start_epoch = nets.factory(args)
-
+    #if not os.path.exists(args.output):
+    #    os.makedirs(args.output)
     for head in net_cpu.head_nets:
         head.apply_class_sigmoid = False
 
@@ -118,11 +121,18 @@ def main():
         net_cpu.head_nets[1] = pretrained.head_nets[1]
         net_cpu.head_nets[2] = pretrained.head_nets[2]
     net = net_cpu.to(device=args.device)
+    if not args.disable_cuda and torch.cuda.device_count() > 1:
+        print('Using multiple GPUs: {}'.format(torch.cuda.device_count()))
+        net = torch.nn.DataParallel(net)
 
-    optimizer, lr_scheduler = optimize.factory(args, net.base_net.parameters(), net.head_nets[0].parameters(),
+        
+    if not args.disable_cuda and torch.cuda.device_count() > 1:
+        optimizer, lr_scheduler = optimize.factory(args, net.module.base_net.parameters(), net.module.head_nets[0].parameters(),
+                                               net.module.head_nets[1].parameters(),net.module.head_nets[2].parameters())
+    else:
+        optimizer, lr_scheduler = optimize.factory(args, net.base_net.parameters(), net.head_nets[0].parameters(),
                                                net.head_nets[1].parameters(),net.head_nets[2].parameters())
     loss_list = losses.factory(args)
-    print(net_cpu.io_scales())
     target_transforms = encoder.factory(args, net_cpu.io_scales())
     #
     preprocess = transforms.Compose([
@@ -181,7 +191,6 @@ def main():
         for n, p in net.named_parameters():
             if not n.startswith('base_net.'):
                 continue
-            print(n)
             if p.requires_grad is False:
                 continue
             p.requires_grad = False
@@ -189,7 +198,6 @@ def main():
         for n, p in net.named_parameters():
             if not n.startswith('heads_nets.0.'):
                 continue
-            print(n)
             if p.requires_grad is False:
                 continue
             p.requires_grad = False
@@ -197,7 +205,6 @@ def main():
         for n, p in net.named_parameters():
             if not n.startswith('heads_nets.1.'):
                 continue
-            print(n)
             if p.requires_grad is False:
                 continue
             p.requires_grad = False

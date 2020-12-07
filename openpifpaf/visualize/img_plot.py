@@ -90,5 +90,5 @@ def image_plot(pairs,img,name,depth_only):
         # rotate the axes and update
         for angle in range(0, 360):
             ax.view_init(210, angle)
-    plt.savefig(name)
+    plt.savefig(name.split('.')[0]+'_result.png')
     fig1.canvas.draw()
