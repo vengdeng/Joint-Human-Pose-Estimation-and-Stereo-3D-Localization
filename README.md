@@ -5,8 +5,11 @@ This is Wenlong's master thesis at VITA Lab EPFL.
 Python 3 is required and you need to clone this repository and then:
 
 ```sh
-pip3 install numpy cython imgaug pycocotools
+pip install numpy cython imgaug pycocotools
+pip install torch==1.4.0 torchvision==0.5.0
 python setup.py install 
+cd openpifpaf/correlation_package
+python setup.py install
 ```
 move the .so file in /build/lib.\* to openpifpaf. Then go to the correlation folder and run 
 ```sh
