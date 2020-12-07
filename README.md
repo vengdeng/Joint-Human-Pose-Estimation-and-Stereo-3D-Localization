@@ -11,10 +11,6 @@ python setup.py install
 cd openpifpaf/correlation_package
 python setup.py install
 ```
-move the .so file in /build/lib.\* to openpifpaf. Then go to the correlation folder and run 
-```sh
-python setup.py install 
-```
 Please notice the correlation module requires GPU, so Mac could not run the model successfully.
 ### Jupyter Example
 We give an example in our example.ipynb to illustrate the usage of our model with kitti dataset. **if you want use your own dataset**, you can fintune the hyperparameter in association_pair.py (ie the depth calculation ratio k and confidence threshold score) file to better match your dataset(**no need to retrain**).  
